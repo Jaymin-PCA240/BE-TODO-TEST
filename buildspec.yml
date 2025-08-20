@@ -5,19 +5,16 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
-      - echo "=== Installing dependencies ==="
-      - npm install
+      - echo Installing dependencies...
+      - npm ci
   build:
     commands:
       - echo "=== Generating Prisma Client ==="
       - npx prisma generate
       - echo "=== Building TypeScript ==="
       - npm run build
+      - mkdir -p deploy
+      - cp -r package.json package-lock.json dist appspec.yml scripts prisma deploy/
 artifacts:
   files:
-    - dist/**/*
-    - prisma/**/*
-    - package.json
-    - package-lock.json
-    - appspec.yml
-    - scripts/**/*
+    - deploy/**/*

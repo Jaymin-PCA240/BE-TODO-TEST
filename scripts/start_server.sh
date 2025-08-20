@@ -1,22 +1,16 @@
 #!/bin/bash
-set -xe
-export PATH=$PATH:/usr/bin:/home/ec2-user/.npm-global/bin
+set -e
 
-cd /var/www/todo
+APP_DIR="/home/ec2-user/app"
 
-npx prisma migrate deploy --schema=prisma/schema.prisma
+echo "=== Starting Node.js server with PM2 ==="
+cd $APP_DIR
 
-# Stop proxy if running
-pm2 describe proxy > /dev/null 2>&1 && pm2 delete proxy || true
+# Ensure PM2 is installed
+if ! command -v pm2 >/dev/null 2>&1; then
+  npm install -g pm2
+fi
 
-# Stop old app
-pm2 describe todo > /dev/null 2>&1 && pm2 delete todo || true
-
-# Load env vars
-export $(grep -v '^#' .env | xargs)
-
-# Start real app
-pm2 start dist/index.js --name todo --watch
-
-# Save PM2
+# Start app fresh
+pm2 start dist/index.js --name node-app
 pm2 save

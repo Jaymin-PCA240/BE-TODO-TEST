@@ -1,0 +1,22 @@
+# node / typescript
+node_modules/
+dist/
+coverage/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.DS_Store
+
+# env & local overrides
+.env
+.env.*
+!.env.example
+
+# prisma
+.prisma/
+prisma/migrations/.DS_Store
+
+# editor & OS
+.vscode/
+.idea/
+*.swp
